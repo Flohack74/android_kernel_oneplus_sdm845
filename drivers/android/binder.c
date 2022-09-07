@@ -2797,8 +2797,11 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	if (oneway) {
 		BUG_ON(thread);
 		if (node->has_async_transaction) {
-			// Halium: possible libgbinder bug workaround
-			/*pending_async = true;*/
+			if (!strcmp(proc->context->name, "hwbinder")) {
+				// Halium: possible libgbinder bug workaround
+			} else {
+				pending_async = true;
+			}
 		} else {
 			node->has_async_transaction = true;
 		}
